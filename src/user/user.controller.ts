@@ -7,12 +7,14 @@ import { hasRoles } from 'src/auth/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { multerOptions } from 'src/config';
+import { EmailService } from 'src/email/email.service';
 import { User, UserRole } from './user.model';
 import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
     constructor(private readonly userService: UserService){}  
+
     @Post()
     async addUser(
     @Body('username') username: string, 
@@ -23,14 +25,17 @@ export class UserController {
     @Body('phoneNumber') userphonenumber: string,
     @Body('age') userage: number,
     ){   
+       
     const user = await this.userService.AddUser(username,  useremail, userpassword, usergender,userprofilepic,userphonenumber, userage);
         return user;
     }
+
     @Post('/login')
     async Login(@Body('username') username: string,
      @Body('password') password: string ){
       return this.userService.Login(username, password);
     }
+
     @hasRoles(UserRole.ADMIN)
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Get()
@@ -49,6 +54,12 @@ export class UserController {
        }))
      }
   
+     @Get('CheckEmailAccount/:id')
+     async checkEmailAccount(@Param('id') userId:string){
+        return this.userService.checkEmailAccount(userId);
+     }
+
+  
      @Get(':id')
      getUser(@Param('id') userId: string,){
          return this.userService.getSingleUser(userId);
@@ -58,13 +69,19 @@ export class UserController {
      @Body('username') username: string, 
      @Body('email') useremail: string,
      @Body('gender') usergender: string,
-     @Body('profilePicture') userprofilepic: string,
+    
      @Body('phoneNumber') userphonenumber: string,
      @Body('age') userage: number,
       ){
-         await this.userService.updateUser(userId, username, useremail,usergender,userprofilepic, userphonenumber, userage);
+         await this.userService.updateUser(userId, username, useremail,usergender, userphonenumber, userage);
           return null;
       }
+
+      @Patch('ActivateAccount/:id')
+      async activateAccount(@Param('id') userId: string, @Body('codeNumber') codeNumber: number){
+          return await this.userService.activateAccount(userId, codeNumber);
+      }
+
       //userRole id ne doit pas etre introduit; juste un exemple pour le cas de plusieurs roles
       @hasRoles(UserRole.ADMIN, UserRole.PARTI)
       @UseGuards(JwtAuthGuard, RolesGuard)
@@ -83,10 +100,12 @@ export class UserController {
          console.log(updateduser);
          return updateduser;
       }
+      @UseGuards(JwtAuthGuard)
       @Get('getprofilepicture/:picturename')
       async getProfilePicture(@Param('picturename') picturename: string, @Res() res){
         return of(res.sendFile(join(process.cwd(), 'uploads/'+picturename)));
 
       }
+
  
 }

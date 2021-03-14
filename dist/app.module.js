@@ -15,6 +15,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const user_module_1 = require("./user/user.module");
 const auth_module_1 = require("./auth/auth.module");
 const config_1 = require("@nestjs/config");
+const email_module_1 = require("./email/email.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -27,6 +28,7 @@ AppModule = __decorate([
             user_module_1.UserModule,
             mongoose_1.MongooseModule.forRoot('mongodb://localhost/nestProduct'),
             auth_module_1.AuthModule,
+            email_module_1.EmailModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

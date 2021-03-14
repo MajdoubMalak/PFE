@@ -1,3 +1,4 @@
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import {Document} from 'mongoose';
 export enum UserRole{
@@ -6,17 +7,31 @@ export enum UserRole{
     ORGA= 'organisateur',
     PRESTA= "prestataire"
 }
-export const UserSchema = new mongoose.Schema({
-username: { type:String, required: true},
-email:{type:String, required: true},
-password: {type:String, required: true},
-gender: {type:String, required: true},
-profilePicture: {type:String, required: true},
-phoneNumber: {type:String, required: true},
-age:{ type:Number, required: true},
-role: {type: String,  required: true, default: UserRole.PARTI},
-});
-
+export type UserDocument = User & Document;
+@Schema()
+export class User{
+@Prop({ required: true})
+username: string;
+@Prop({required: true})
+email: string;
+@Prop({ required: true})
+password: string;
+@Prop({  required: true})
+gender: string;
+@Prop({  required: true})
+profilePicture: string;
+@Prop({ required: true})
+phoneNumber: string;
+@Prop({ required: true})
+age:number;
+@Prop({ required: true, default: UserRole.PARTI})
+role: string; 
+@Prop( {required: true, default: -1})
+codeNumber: number;
+@Prop({required: true, default:false})
+activated: boolean; 
+}
+export const UserSchema = SchemaFactory.createForClass(User);
 export interface User extends Document {
     id: string;
     username: string;
@@ -26,7 +41,9 @@ export interface User extends Document {
     profilePicture: string;
     phoneNumber: string;
     age: number;
-    role: UserRole;
+    role: string;
+    codeNumber: number;
+    activated: boolean;
 
 }
 

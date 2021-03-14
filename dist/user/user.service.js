@@ -17,10 +17,12 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("mongoose");
 const mongoose_2 = require("@nestjs/mongoose");
 const auth_service_1 = require("../auth/auth.service");
+const email_service_1 = require("../email/email.service");
 let UserService = class UserService {
-    constructor(userModel, authService) {
+    constructor(userModel, authService, emailService) {
         this.userModel = userModel;
         this.authService = authService;
+        this.emailService = emailService;
     }
     async AddUser(username, email, password, gender, profilepicture, phoneNumber, age) {
         const usernameexist = await this.userModel.findOne({ username: username }).exec();
@@ -92,6 +94,11 @@ let UserService = class UserService {
         updateduser.profilePicture = profilepicture;
         updateduser.save();
     }
+    async updateCodeNumber(id, codenumber) {
+        const updateuser = await this.findUser(id);
+        updateuser.codeNumber = codenumber;
+        updateuser.save();
+    }
     async deleteUser(id) {
         const result = await this.userModel.deleteOne({ _id: id }).exec();
         console.log(result);
@@ -115,12 +122,41 @@ let UserService = class UserService {
             return 'wrong username taped';
         }
         else {
-            if (await this.authService.comparePasswords(password, user.password)) {
-                return this.authService.generateJWT(user);
+            if (!user.activated) {
+                return 'Account not activated';
             }
             else {
-                return 'wrong password inserted taped';
+                if (await this.authService.comparePasswords(password, user.password)) {
+                    return this.authService.generateJWT(user);
+                }
+                else {
+                    return 'wrong password inserted taped';
+                }
             }
+        }
+    }
+    async checkEmailAccount(id) {
+        const user = await this.findUser(id);
+        const username = user.username;
+        const useremail = user.email;
+        const random = Math.random() * 10000;
+        const code = Math.round(random);
+        console.log('random number: ', random);
+        console.log(code);
+        this.emailService.sendemail(username, useremail, code);
+        user.codeNumber = code;
+        user.save();
+        return "Code number sent by email";
+    }
+    async activateAccount(id, codeNumber) {
+        const updateuser = await this.findUser(id);
+        if (updateuser.codeNumber == codeNumber) {
+            updateuser.activated = true;
+            updateuser.save();
+            return 'account activated';
+        }
+        else {
+            return 'wrong code';
         }
     }
 };
@@ -128,7 +164,8 @@ UserService = __decorate([
     common_1.Injectable(),
     __param(0, mongoose_2.InjectModel('User')),
     __metadata("design:paramtypes", [mongoose_1.Model,
-        auth_service_1.AuthService])
+        auth_service_1.AuthService,
+        email_service_1.EmailService])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

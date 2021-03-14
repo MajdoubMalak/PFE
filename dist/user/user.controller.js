@@ -21,11 +21,13 @@ const roles_decorator_1 = require("../auth/decorators/roles.decorator");
 const jwt_guard_1 = require("../auth/guards/jwt-guard");
 const roles_guard_1 = require("../auth/guards/roles.guard");
 const config_1 = require("../config");
+const email_service_1 = require("../email/email.service");
 const user_model_1 = require("./user.model");
 const user_service_1 = require("./user.service");
 let UserController = class UserController {
-    constructor(userService) {
+    constructor(userService, emailService) {
         this.userService = userService;
+        this.emailService = emailService;
     }
     async addUser(username, useremail, userpassword, usergender, userprofilepic, userphonenumber, userage) {
         const user = await this.userService.AddUser(username, useremail, userpassword, usergender, userprofilepic, userphonenumber, userage);
@@ -47,12 +49,18 @@ let UserController = class UserController {
             age: user.age,
         }));
     }
+    async checkEmailAccount(userId) {
+        return this.userService.checkEmailAccount(userId);
+    }
     getUser(userId) {
         return this.userService.getSingleUser(userId);
     }
     async updateUser(userId, username, useremail, usergender, userprofilepic, userphonenumber, userage) {
         await this.userService.updateUser(userId, username, useremail, usergender, userprofilepic, userphonenumber, userage);
         return null;
+    }
+    async activateAccount(userId, codeNumber) {
+        return await this.userService.activateAccount(userId, codeNumber);
     }
     async deleteUser(userId) {
         await this.userService.deleteUser(userId);
@@ -98,6 +106,13 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getAllUsers", null);
 __decorate([
+    common_1.Get('CheckEmailAccount/:id'),
+    __param(0, common_1.Param('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "checkEmailAccount", null);
+__decorate([
     common_1.Get(':id'),
     __param(0, common_1.Param('id')),
     __metadata("design:type", Function),
@@ -117,6 +132,13 @@ __decorate([
     __metadata("design:paramtypes", [String, String, String, String, String, String, Number]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "updateUser", null);
+__decorate([
+    common_1.Patch('ActivateAccount/:id'),
+    __param(0, common_1.Param('id')), __param(1, common_1.Body('codeNumber')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Number]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "activateAccount", null);
 __decorate([
     roles_decorator_1.hasRoles(user_model_1.UserRole.ADMIN, user_model_1.UserRole.PARTI),
     common_1.UseGuards(jwt_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
@@ -144,7 +166,8 @@ __decorate([
 ], UserController.prototype, "getProfilePicture", null);
 UserController = __decorate([
     common_1.Controller('user'),
-    __metadata("design:paramtypes", [user_service_1.UserService])
+    __metadata("design:paramtypes", [user_service_1.UserService,
+        email_service_1.EmailService])
 ], UserController);
 exports.UserController = UserController;
 //# sourceMappingURL=user.controller.js.map

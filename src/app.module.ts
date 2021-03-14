@@ -6,17 +6,20 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
-import { MulterModule } from '@nestjs/platform-express';
+import { EmailModule } from './email/email.module';
+
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true
     }),
+
     ProductsModule,
     UserModule,
     MongooseModule.forRoot('mongodb://localhost/nestProduct'),
     AuthModule,
+    EmailModule
   
   ],
   controllers: [AppController],

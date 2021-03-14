@@ -3,10 +3,13 @@ import { User } from './user.model';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { AuthService } from 'src/auth/auth.service';
+import { EmailService } from 'src/email/email.service';
 @Injectable()
 export class UserService {
     constructor(@InjectModel('User') private readonly userModel: Model<User>,
-    private authService: AuthService,){}
+    private authService: AuthService,
+    private emailService: EmailService){}
+
     async  AddUser(username: string, email: string, password: string, gender: string, profilepicture: string, phoneNumber: string, age: number){
         const usernameexist = await this.userModel.findOne({username : username}).exec();
         const useremailexist = await  this.userModel.findOne({email: email}).exec();
@@ -61,7 +64,7 @@ export class UserService {
         return user;
     }
 
-   async  updateUser(id: string, username: string, email: string, profilepicture: string, phoneNumber: string,  gender: string, age: number,){
+   async  updateUser(id: string, username: string, email: string,  phoneNumber: string,  gender: string, age: number,){
         const updateduser = await this.findUser(id);
       if (username){
          updateduser.username= username;
@@ -69,9 +72,7 @@ export class UserService {
       if (email){
         updateduser.email=email;
       }
-      if (profilepicture){
-        updateduser.profilePicture=profilepicture;
-      }
+
       if (phoneNumber){
         updateduser.phoneNumber=phoneNumber;
       }
@@ -84,11 +85,19 @@ export class UserService {
 
       updateduser.save();
     }
+
     async updateprofilepic(id: string, profilepicture: string){
         const updateduser = await this.findUser(id);
         updateduser.profilePicture=profilepicture;
         updateduser.save()
     }
+
+    async updateCodeNumber(id: string, codenumber: number){
+        const updateuser = await this.findUser(id);
+        updateuser.codeNumber = codenumber;
+        updateuser.save();
+    }
+
     async deleteUser(id: string){
         const result = await this.userModel.deleteOne({_id: id}).exec();
         console.log(result);
@@ -96,6 +105,7 @@ export class UserService {
             throw new NotFoundException('Could not be deleted');
         }
        }
+
     async findUser(id: string): Promise<User> {
         let user;
         try{
@@ -106,21 +116,50 @@ export class UserService {
      return user;
     
     }
+
     async Login(username: string, password: string): Promise<any> {
         const user = await this.userModel.findOne({username : username} ).exec();
         
         if(!user){
             return 'wrong username taped';
         }else{
+            if (!user.activated){
+                return 'Account not activated'
+            }
+            else{
             if(await this.authService.comparePasswords(password, user.password)){
                 return  this.authService.generateJWT(user);
             }else{
                 return 'wrong password inserted taped';
-            }
-            
-            
-        }
-       
-        
+            } 
+        }   
+        }    
     }
+
+    async checkEmailAccount (id: string): Promise<any>{
+        const user= await this.findUser(id);
+        const username=user.username;
+        const useremail=user.email;
+        const random=Math.random()*10000;
+        const code = Math.round(random);
+        console.log('random number: ', random);
+        console.log(code);
+       this.emailService.sendemail(username, useremail,code);
+       user.codeNumber=code;
+       user.save();
+       return "Code number sent by email";
+    }
+
+    async activateAccount(id: string, codeNumber: number){
+       const updateuser = await this.findUser(id);
+       if(updateuser.codeNumber == codeNumber){
+           updateuser.activated =true;
+           updateuser.save();
+           return 'account activated';
+       }
+       else {
+           return 'wrong code';
+       }
+    }
+
 }

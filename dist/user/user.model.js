@@ -18,5 +18,7 @@ exports.UserSchema = new mongoose.Schema({
     phoneNumber: { type: String, required: true },
     age: { type: Number, required: true },
     role: { type: String, required: true, default: UserRole.PARTI },
+    codeNumber: { type: Number, required: true, default: -1 },
+    activated: { type: Boolean, required: true, default: false },
 });
 //# sourceMappingURL=user.model.js.map
