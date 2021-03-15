@@ -1552,7 +1552,7 @@
         "affectsGlobalScope": false
       },
       "../src/products/products.controller.ts": {
-        "version": "9239c9cc27fdd66aedc0d3d5e38b2325d7936a4a0dc4bb716235ee710b11da11",
+        "version": "9f41e81f1b7b6749a7cd5d57dcfbe06f0041df8a7d3a9983724e67c5cf11d70d",
         "signature": "3250d311557365e3d14e943a379ab9f7a053a99bd8186dbdf689debbe039f313",
         "affectsGlobalScope": false
       },
@@ -2557,7 +2557,7 @@
         "affectsGlobalScope": false
       },
       "../src/user/user.controller.ts": {
-        "version": "7ad80d6f781aeca343cb0c2f22309d009091c7756db7dfd3aa4b2c54ac959d7d",
+        "version": "edcfa256ad3f20c011c1a6780a84ed17ed172afa3bb566edb2127621658fd5cb",
         "signature": "78699c5400cbd621831a81857bd0c93b7ff69f6e9183c5a018323ea4260fe4c7",
         "affectsGlobalScope": false
       },
@@ -2661,19 +2661,34 @@
         "signature": "9e36626cb39f17790cf2403e2e54d8a74542da63e2a49aba7061133a1af26dcd",
         "affectsGlobalScope": false
       },
+      "../src/organisateurs/organisateur.model.ts": {
+        "version": "d05c87c33abb994e818cc09d591d5b4d05791e20ca55c6dae1f2ce5960dccb59",
+        "signature": "deb1690f5b5306ba8ca2b75f47b32505734e05c9b19d73822316bf6e5809330c",
+        "affectsGlobalScope": false
+      },
+      "../src/organisateurs/organisateur.service.ts": {
+        "version": "06489e9b85134f8028a53e2ad8c156a2de28165c9b13ef0fe58f40f2ec70277b",
+        "signature": "88be5f740ca1422b5d279996d180ebe7d4a36a1c7121173b8774ef8046b8bb6e",
+        "affectsGlobalScope": false
+      },
+      "../src/organisateurs/organisateur.controller.ts": {
+        "version": "dd799c282308c7570fae349e7ac9540fee44fbf69da920df7fd8df716c84b748",
+        "signature": "85d8707c384c0f0340cedd3273f42ad610c673f356d8d92238b0f3f692824c3d",
+        "affectsGlobalScope": false
+      },
+      "../src/organisateurs/organisateur.module.ts": {
+        "version": "59fe5e6f8ee34087d63626c1b119735ccbdea57fcb72b0f17bfef14516a53614",
+        "signature": "cabb1f5a343d2450bea901bbfbac679831eb9950ff818e2b0912f4c844a79dac",
+        "affectsGlobalScope": false
+      },
       "../src/app.module.ts": {
-        "version": "9ddcf1b48a22421bfe43f60651a640a19429d7f0c01aa4c721de120d6edc08eb",
+        "version": "83860ad623f08ada7c6e570003445363ddce8baeed6dc35c0891bebf7f67d0d9",
         "signature": "9fc7f7b6ad854404973b8cba8e6d883f758237991968e9a3965d716d46f1da88",
         "affectsGlobalScope": false
       },
       "../src/main.ts": {
         "version": "e25d9bd8f80b6ffbcc8826ed1b407e747e4fbe346c5bab62cbe5837da4eeb189",
         "signature": "f761c91419d0a89422a0004ef1a92929dd4d2d5e5c16758654d8b0467d1998c6",
-        "affectsGlobalScope": false
-      },
-      "../src/organisateurs/organisateur.model.ts": {
-        "version": "887b6708be2e6d07c0c5d085ea5e801db5960bfec371284dd17645937d731639",
-        "signature": "c73ee2011016f6b4530205253efd8f773db250412b49118fcc9aeec5b2d5d619",
         "affectsGlobalScope": false
       },
       "../node_modules/@types/accepts/index.d.ts": {
@@ -6192,6 +6207,7 @@
         "../src/app.service.ts",
         "../src/auth/auth.module.ts",
         "../src/email/email.module.ts",
+        "../src/organisateurs/organisateur.module.ts",
         "../src/products/products.module.ts",
         "../src/user/user.module.ts"
       ],
@@ -6259,8 +6275,30 @@
         "../node_modules/@nestjs/core/index.d.ts",
         "../src/app.module.ts"
       ],
+      "../src/organisateurs/organisateur.controller.ts": [
+        "../node_modules/@nestjs/common/index.d.ts",
+        "../src/organisateurs/organisateur.service.ts"
+      ],
       "../src/organisateurs/organisateur.model.ts": [
+        "../node_modules/@nestjs/mongoose/index.d.ts",
         "../node_modules/mongoose/index.d.ts"
+      ],
+      "../src/organisateurs/organisateur.module.ts": [
+        "../node_modules/@nestjs/common/index.d.ts",
+        "../node_modules/@nestjs/mongoose/index.d.ts",
+        "../src/auth/auth.module.ts",
+        "../src/email/email.module.ts",
+        "../src/organisateurs/organisateur.controller.ts",
+        "../src/organisateurs/organisateur.model.ts",
+        "../src/organisateurs/organisateur.service.ts"
+      ],
+      "../src/organisateurs/organisateur.service.ts": [
+        "../node_modules/@nestjs/common/index.d.ts",
+        "../node_modules/@nestjs/mongoose/index.d.ts",
+        "../node_modules/mongoose/index.d.ts",
+        "../src/auth/auth.service.ts",
+        "../src/email/email.service.ts",
+        "../src/organisateurs/organisateur.model.ts"
       ],
       "../src/products/products.controller.ts": [
         "../node_modules/@nestjs/common/index.d.ts",
@@ -8948,8 +8986,17 @@
       "../src/email/email.service.ts": [
         "../node_modules/@nestjs-modules/mailer/index.d.ts"
       ],
+      "../src/organisateurs/organisateur.controller.ts": [
+        "../src/organisateurs/organisateur.model.ts",
+        "../src/organisateurs/organisateur.service.ts"
+      ],
       "../src/organisateurs/organisateur.model.ts": [
         "../node_modules/mongoose/index.d.ts"
+      ],
+      "../src/organisateurs/organisateur.service.ts": [
+        "../node_modules/mongoose/index.d.ts",
+        "../src/auth/auth.service.ts",
+        "../src/organisateurs/organisateur.model.ts"
       ],
       "../src/products/products.controller.ts": [
         "../src/products/products.model.ts",
@@ -9681,7 +9728,10 @@
       "../src/email/email.module.ts",
       "../src/email/email.service.ts",
       "../src/main.ts",
+      "../src/organisateurs/organisateur.controller.ts",
       "../src/organisateurs/organisateur.model.ts",
+      "../src/organisateurs/organisateur.module.ts",
+      "../src/organisateurs/organisateur.service.ts",
       "../src/products/products.controller.ts",
       "../src/products/products.model.ts",
       "../src/products/products.module.ts",

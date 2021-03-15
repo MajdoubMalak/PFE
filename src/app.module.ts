@@ -7,6 +7,8 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { EmailModule } from './email/email.module';
+import { OrganisateurModule } from './organisateurs/organisateur.module';
+
 
 
 @Module({
@@ -17,9 +19,11 @@ import { EmailModule } from './email/email.module';
 
     ProductsModule,
     UserModule,
+    OrganisateurModule,
     MongooseModule.forRoot('mongodb://localhost/nestProduct'),
     AuthModule,
-    EmailModule
+    EmailModule,
+   
   
   ],
   controllers: [AppController],

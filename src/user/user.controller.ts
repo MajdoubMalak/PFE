@@ -11,7 +11,7 @@ import { EmailService } from 'src/email/email.service';
 import { User, UserRole } from './user.model';
 import { UserService } from './user.service';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
     constructor(private readonly userService: UserService){}  
 

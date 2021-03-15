@@ -164,7 +164,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getProfilePicture", null);
 UserController = __decorate([
-    common_1.Controller('user'),
+    common_1.Controller('users'),
     __metadata("design:paramtypes", [user_service_1.UserService])
 ], UserController);
 exports.UserController = UserController;
